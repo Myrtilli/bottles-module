@@ -181,6 +181,10 @@ import (
 	"github.com/Bridgeless-Project/bridgeless-core/v12/x/ibc/transfer"
 	transferkeeper "github.com/Bridgeless-Project/bridgeless-core/v12/x/ibc/transfer/keeper"
 
+	"github.com/Bridgeless-Project/bridgeless-core/v12/x/bottles"
+	bottleskeeper "github.com/Bridgeless-Project/bridgeless-core/v12/x/bottles/keeper"
+	bottlestypes "github.com/Bridgeless-Project/bridgeless-core/v12/x/bottles/types"
+
 	// Force-load the tracer engines to trigger registration due to Go-Ethereum v1.10.15 changes
 	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
@@ -249,6 +253,7 @@ var (
 		mint.AppModuleBasic{},
 		nft.AppModuleBasic{},
 		bridge.AppModuleBasic{},
+		bottles.AppModuleBasic{},
 		multisig.AppModuleBasic{},
 	)
 
@@ -268,6 +273,7 @@ var (
 		minttypes.ModuleName:           {authtypes.Minter, authtypes.Staking, authtypes.Burner},
 		nfttypes.ModuleName:            nil,
 		bridgetypes.ModuleName:         nil,
+		bottlestypes.ModuleName:        nil,
 		multisigtypes.ModuleName:       nil,
 	}
 
@@ -340,6 +346,9 @@ type Bridge struct {
 
 	MultisigKeeper multisigkeeper.Keeper
 
+	//bottles keeper
+	BottlesKeeper *bottleskeeper.Keeper
+
 	// the module manager
 	mm *module.Manager
 
@@ -401,6 +410,7 @@ func NewBridge(
 		minttypes.StoreKey,
 		nfttypes.StoreKey,
 		bridgetypes.StoreKey,
+		bottlestypes.StoreKey,
 		multisigtypes.StoreKey,
 	)
 
@@ -848,11 +858,11 @@ func NewBridge(
 
 		recoverytypes.ModuleName,
 		revenuetypes.ModuleName,
+		nfttypes.ModuleName,
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
 		accumulatortypes.ModuleName,
 		minttypes.ModuleName,
-		nfttypes.ModuleName,
 		bridgetypes.ModuleName,
 		multisigtypes.ModuleName,
 	)

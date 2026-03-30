@@ -1,0 +1,7 @@
+syntax = "proto3";
+package dummychain.bottles;
+
+option go_package = "github.com/katherine/dummychain/x/bottles/types";
+
+// Msg defines the Msg service.
+service Msg {}
