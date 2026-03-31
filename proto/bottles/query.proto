@@ -1,0 +1,49 @@
+syntax = "proto3";
+package core.bottles;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "bottles/params.proto";
+import "bottles/bottle.proto";
+
+option go_package = "github.com/Bridgeless-Project/bridgeless-core/v12/x/bottles/types";
+
+service Query {
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/core/bottles/params";
+  }
+  
+  // Get a specific bottle by ID
+  rpc Bottle(QueryGetBottleRequest) returns (QueryGetBottleResponse) {
+    option (google.api.http).get = "/core/bottles/bottle/{id}";
+  }
+
+  // Get all bottles with pagination
+  rpc BottleAll(QueryAllBottleRequest) returns (QueryAllBottleResponse) {
+    option (google.api.http).get = "/core/bottles/bottle";
+  }
+}
+
+message QueryParamsRequest {}
+
+message QueryParamsResponse {
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetBottleRequest {
+  uint64 id = 1;
+}
+
+message QueryGetBottleResponse {
+  Bottle bottle = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllBottleRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllBottleResponse {
+  repeated Bottle bottle = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
