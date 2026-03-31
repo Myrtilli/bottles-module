@@ -465,6 +465,13 @@ func NewBridge(
 		appCodec, keys[bridgetypes.StoreKey], keys[bridgetypes.StoreKey], app.GetSubspace(bridgetypes.ModuleName),
 	)
 
+	app.BottlesKeeper = bottleskeeper.NewKeeper(
+		appCodec,
+		keys[bottlestypes.StoreKey],
+		keys[bottlestypes.StoreKey],
+		app.GetSubspace(bottlestypes.ModuleName),
+	)
+
 	app.AccumulatorKeeper = accumulatorkeeper.NewKeeper(
 		appCodec,
 		keys[accumulatortypes.StoreKey],
@@ -739,6 +746,7 @@ func NewBridge(
 		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper),
 		nft.NewAppModule(appCodec, *app.NFTKeeper, app.AccountKeeper, app.BankKeeper),
 		bridge.NewAppModule(appCodec, *app.BridgeKeeper),
+		bottles.NewAppModule(appCodec, *app.BottlesKeeper),
 		multisig.NewAppModule(appCodec, app.MultisigKeeper, app.AccountKeeper),
 	)
 
@@ -778,6 +786,7 @@ func NewBridge(
 		accumulatortypes.ModuleName,
 		minttypes.ModuleName,
 		nfttypes.ModuleName,
+		bottlestypes.ModuleName,
 		bridgetypes.ModuleName,
 		multisigtypes.ModuleName,
 	)
@@ -816,6 +825,7 @@ func NewBridge(
 		accumulatortypes.ModuleName,
 		minttypes.ModuleName,
 		nfttypes.ModuleName,
+		bottlestypes.ModuleName,
 		bridgetypes.ModuleName,
 		multisigtypes.ModuleName,
 	)
@@ -863,6 +873,7 @@ func NewBridge(
 		crisistypes.ModuleName,
 		accumulatortypes.ModuleName,
 		minttypes.ModuleName,
+		bottlestypes.ModuleName,
 		bridgetypes.ModuleName,
 		multisigtypes.ModuleName,
 	)
@@ -1205,5 +1216,6 @@ func initParamsKeeper(
 	paramsKeeper.Subspace(minttypes.ModuleName)
 	paramsKeeper.Subspace(nfttypes.ModuleName)
 	paramsKeeper.Subspace(bridgetypes.ModuleName)
+	paramsKeeper.Subspace(bottlestypes.ModuleName)
 	return paramsKeeper
 }
