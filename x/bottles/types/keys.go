@@ -12,6 +12,10 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_bottles"
+
+	BottleKeyPrefix = "Bottle/value/"
+
+	BottleCountKey = "Bottle/count/"
 )
 
 func KeyPrefix(p string) []byte {
