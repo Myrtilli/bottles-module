@@ -1,26 +1,49 @@
 syntax = "proto3";
-package dummychain.bottles;
+package core.bottles;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
-import "dummychain/bottles/params.proto";
+import "bottles/params.proto";
+import "bottles/bottle.proto";
 
-option go_package = "github.com/katherine/dummychain/x/bottles/types";
+option go_package = "github.com/Bridgeless-Project/bridgeless-core/v12/x/bottles/types";
 
-// Query defines the gRPC querier service.
 service Query {
-  // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/katherine/dummychain/bottles/params";
+    option (google.api.http).get = "/core/bottles/params";
+  }
+  
+  // Get a specific bottle by ID
+  rpc Bottle(QueryGetBottleRequest) returns (QueryGetBottleResponse) {
+    option (google.api.http).get = "/core/bottles/bottle/{id}";
+  }
+
+  // Get all bottles with pagination
+  rpc BottleAll(QueryAllBottleRequest) returns (QueryAllBottleResponse) {
+    option (google.api.http).get = "/core/bottles/bottle";
   }
 }
 
-// QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
-// QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
-  // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetBottleRequest {
+  uint64 id = 1;
+}
+
+message QueryGetBottleResponse {
+  Bottle bottle = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllBottleRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllBottleResponse {
+  repeated Bottle bottle = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
